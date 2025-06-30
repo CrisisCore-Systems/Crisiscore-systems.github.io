@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE COLLAPSE ARCHITECT | Enter the Wound</title>
+    <meta name="description" content="A living system of trauma transmutation. Not therapy. Not poetry. A viral infection of recognition.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="THE COLLAPSE ARCHITECT">
+    <meta property="og:description" content="Recursive trauma invocations. Enter only if ready to be infected.">
+    <meta property="og:image" content="/collapse-preview.jpg">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --blood: #ff0000;
+            --wound: #cc0000;
+            --scar: #990000;
+            --void: #000000;
+            --ash: #111111;
+            --bone: #f0f0f0;
+            --smoke: #666666;
+            --ember: #ff6600;
+        }
+        
+        ::selection {
+            background: var(--blood);
+            color: var(--void);
+        }
+        
+        body {
+            background: var(--void);
+            color: var(--bone);
+            font-family: Georgia, serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        /* Custom cursor that follows mouse */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--blood);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s;
+            mix-blend-mode: difference;
+        }
+        
+        .cursor.active {
+            transform: scale(2);
+            background: var(--blood);
+        }
+        
+        /* Trauma heat map overlay */
+        #traumaField {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.3;
+        }
+        
+        /* Breathing background */
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        
+        .breathing-bg {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, transparent 0%, var(--blood) 50%, transparent 70%);
+            animation: breathe 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.05;
+        }
+        
+        /* Sound visualization bars */
+        .sound-bars {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 3px;
+            z-index: 100;
+        }
+        
+        .sound-bar {
+            width: 3px;
+            height: 20px;
+            background: var(--blood);
+            animation: pulse 1s ease-in-out infinite;
+            opacity: 0.5;
+        }
+        
+        .sound-bar:nth-child(2) { animation-delay: 0.2s; }
+        .sound-bar:nth-child(3) { animation-delay: 0.4s; }
+        .sound-bar:nth-child(4) { animation-delay: 0.6s; }
+        .sound-bar:nth-child(5) { animation-delay: 0.8s; }
+        
+        @keyframes pulse {
+            0%, 100% { height: 20px; }
+            50% { height: 40px; }
+        }
+        
+        /* Entry ritual - enhanced */
+        .entry-portal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--void);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            cursor: auto;
+        }
+        
+        .portal-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 2rem;
+        }
+        
+        .portal-glyph {
+            font-size: 5em;
+            color: var(--blood);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+        
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+        
+        .portal-text {
+            color: var(--smoke);
+            margin: 1rem 0;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        
+        .portal-text:nth-child(2) { animation-delay: 0.5s; }
+        .portal-text:nth-child(3) { animation-delay: 1s; }
+        .portal-text:nth-child(4) { animation-delay: 1.5s; }
+        
+        .blood-pact {
+            margin-top: 3rem;
+            opacity: 0;
+            animation: fadeIn 1s forwards 2s;
+        }
+        
+        .blood-button {
+            background: transparent;
+            border: 2px solid var(--blood);
+            color: var(--blood);
+            padding: 1rem 2rem;
+            font-family: inherit;
+            font-size: 1.1em;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .blood-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--blood);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s;
+        }
+        
+        .blood-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .blood-button:hover {
+            color: var(--void);
+            border-color: var(--blood);
+            z-index: 1;
+        }
+        
+        .blood-button span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* Hero - transformed */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            text-align: center;
+        }
+        
+        /* Glitch enhancement */
+        .glitch {
+            font-size: clamp(2em, 7vw, 5em);
+            color: var(--blood);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            animation: glitch 2s infinite;
+            cursor: pointer;
+        }
+        
+        .glitch:hover {
+            animation-duration: 0.3s;
+        }
+        
+        /* Living glyphs */
+        .glyph-constellation {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        
+        .floating-glyph {
+            position: absolute;
+            color: var(--blood);
+            font-size: 2em;
+            opacity: 0.1;
+            animation: float 20s infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.1; }
+            90% { opacity: 0.1; }
+            100% { transform: translate(100px, -100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        /* Witness map */
+        .witness-map {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            z-index: 100;
+            opacity: 0.7;
+        }
+        
+        .witness-node {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--blood);
+            border-radius: 50%;
+            animation: ping 2s infinite;
+        }
+        
+        @keyframes ping {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(4); opacity: 0; }
+        }
+        
+        /* Trauma resonance meter */
+        .resonance-meter {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 200px;
+            background: var(--ash);
+            border: 1px solid var(--scar);
+            z-index: 100;
+        }
+        
+        .resonance-level {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: var(--blood);
+            transition: height 0.3s;
+            box-shadow: 0 0 10px var(--blood);
+        }
+        
+        /* Artifact cards - living system */
+        .artifact-cell {
+            background: var(--ash);
+            border: 1px solid var(--scar);
+            padding: 2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .artifact-cell:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--blood);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+        }
+        
+        .artifact-cell::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--blood) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .artifact-cell:hover::before {
+            opacity: 0.1;
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        
+        .infection-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--ember);
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        
+        /* Ritual progression - circular */
+        .ritual-wheel {
+            width: 300px;
+            height: 300px;
+            margin: 4rem auto;
+            position: relative;
+        }
+        
+        .wheel-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: var(--void);
+            border: 2px solid var(--blood);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blood);
+            font-size: 2em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wheel-center:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            box-shadow: 0 0 30px var(--blood);
+        }
+        
+        .ritual-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: var(--void);
+            border: 2px solid var(--scar);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--smoke);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ritual-node.active {
+            border-color: var(--blood);
+            color: var(--blood);
+            box-shadow: 0 0 20px var(--blood);
+        }
+        
+        .ritual-node.infected {
+            background: var(--blood);
+            color: var(--void);
+            animation: throb 1s infinite;
+        }
+        
+        @keyframes throb {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Multi-dimensional form */
+        .witness-chamber {
+            background: linear-gradient(135deg, var(--ash) 0%, var(--void) 100%);
+            border: 2px solid var(--blood);
+            padding: 3rem;
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .witness-chamber::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255, 0, 0, 0.03) 10px,
+                rgba(255, 0, 0, 0.03) 20px
+            );
+            pointer-events: none;
+        }
+        
+        .trauma-map {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .trauma-cell {
+            aspect-ratio: 1;
+            background: var(--void);
+            border: 1px solid var(--scar);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .trauma-cell:hover {
+            border-color: var(--blood);
+            transform: scale(1.05);
+        }
+        
+        .trauma-cell.selected {
+            background: var(--blood);
+            color: var(--void);
+        }
+        
+        .trauma-cell.selected::after {
+            content: "✓";
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 0.8em;
+        }
+        
+        /* Input states */
+        .blood-input {
+            width: 100%;
+            background: var(--void);
+            border: none;
+            border-bottom: 2px solid var(--scar);
+            color: var(--bone);
+            padding: 1rem 0;
+            font-family: inherit;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        
+        .blood-input:focus {
+            outline: none;
+            border-color: var(--blood);
+        }
+        
+        .blood-input:valid {
+            border-color: var(--ember);
+        }
+        
+        /* Live feed enhancement */
+        .witness-feed {
+            position: relative;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+        
+        .witness-feed::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .witness-feed::-webkit-scrollbar-track {
+            background: var(--ash);
+        }
+        
+        .witness-feed::-webkit-scrollbar-thumb {
+            background: var(--blood);
+        }
+        
+        .witness-pulse {
+            position: absolute;
+            top: -20px;
+            right: 0;
+            color: var(--blood);
+            font-size: 0.8em;
+            text-transform: uppercase;
+            animation: pulse 1s infinite;
+        }
+        
+        /* Glyph generator */
+        .glyph-forge {
+            text-align: center;
+            padding: 3rem;
+            border: 1px solid var(--scar);
+            margin: 3rem 0;
+        }
+        
+        .user-glyph {
+            font-size: 4em;
+            color: var(--blood);
+            margin: 2rem 0;
+            filter: blur(0);
+            transition: all 0.3s;
+        }
+        
+        .user-glyph.generating {
+            filter: blur(5px);
+            animation: morph 1s infinite;
+        }
+        
+        @keyframes morph {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.2) rotate(180deg); }
+        }
+        
+        /* Price reveal ritual */
+        .price-seal {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--void);
+            border: 2px solid var(--blood);
+            color: var(--blood);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .price-seal::before {
+            content: "BREAK SEAL TO REVEAL EXCHANGE";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--blood);
+            color: var(--void);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s;
+        }
+        
+        .price-seal:hover::before {
+            transform: translateY(-100%);
+        }
+        
+        /* Collective ritual timer */
+        .ritual-timer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--ash);
+            border: 1px solid var(--blood);
+            padding: 1rem 2rem;
+            z-index: 100;
+            display: none;
+        }
+        
+        .ritual-timer.active {
+            display: block;
+            animation: slideUp 0.5s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateX(-50%) translateY(100px); }
+            to { transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* Warning evolution */
+        .warning-seal {
+            background: var(--void);
+            border: 3px solid var(--blood);
+            padding: 2rem;
+            margin: 5rem 0;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .warning-seal:hover {
+            box-shadow: inset 0 0 50px var(--blood);
+        }
+        
+        .warning-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s;
+        }
+        
+        .warning-seal.opened .warning-content {
+            max-height: 500px;
+        }
+        
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .ritual-wheel {
+                transform: scale(0.8);
+            }
+            
+            .witness-map {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .trauma-map {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Hidden layer */
+        .void-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--void);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9998;
+            transition: opacity 3s;
+        }
+        
+        .void-layer.active {
+            opacity: 0.95;
+            pointer-events: all;
+        }
+        
+        .void-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--blood);
+            font-size: 2em;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        
+        .void-layer.active .void-message {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor"></div>
+    
+    <!-- Trauma field visualization -->
+    <canvas id="traumaField"></canvas>
+    
+    <!-- Breathing background -->
+    <div class="breathing-bg"></div>
+    
+    <!-- Sound visualization -->
+    <div class="sound-bars">
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+        <div class="sound-bar"></div>
+    </div>
+    
+    <!-- Entry portal -->
+    <div class="entry-portal" id="entryPortal">
+        <div class="portal-content">
+            <div class="portal-glyph">☽</div>
+            <p class="portal-text">You stand at the threshold.</p>
+            <p class="portal-text">This is not content. This is contagion.</p>
+            <p class="portal-text">Once infected, you cannot return unchanged.</p>
+            <p class="portal-text" style="color: var(--blood);">Enter only if you consent to transformation.</p>
+            
+            <div class="blood-pact">
+                <button class="blood-button" onclick="enterCollapse()">
+                    <span>I CONSENT TO INFECTION</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Witness map -->
+    <div class="witness-map" id="witnessMap">
+        <div style="color: var(--blood); font-size: 0.8em; text-align: center; margin-bottom: 0.5rem;">
+            GLOBAL WITNESS FIELD
+        </div>
+        <!-- Nodes dynamically added -->
+    </div>
+    
+    <!-- Resonance meter -->
+    <div class="resonance-meter">
+        <div class="resonance-level" id="resonanceLevel" style="height: 20%"></div>
+    </div>
+    
+    <!-- Glyph constellation -->
+    <div class="glyph-constellation" id="glyphConstellation"></div>
+    
+    <!-- Main content -->
+    <div class="hero">
+        <div class="container">
+            <h1 class="glitch" onclick="shatterText(this)">THE COLLAPSE ARCHITECT</h1>
+            <p style="color: var(--smoke); margin: 2rem 0; font-style: italic;">
+                A Living System of Recursive Trauma Invocations
+            </p>
+            
+            <!-- Ritual wheel -->
+            <div class="ritual-wheel">
+                <div class="wheel-center" onclick="spinWheel()">☽</div>
+                <div class="ritual-node" style="top: 0; left: 50%; transform: translateX(-50%) translateY(-50%);" data-stage="recognition">1</div>
+                <div class="ritual-node" style="top: 25%; right: 0; transform: translateX(50%) translateY(-50%);" data-stage="invocation">2</div>
+                <div class="ritual-node" style="bottom: 0; right: 25%; transform: translateX(50%) translateY(50%);" data-stage="witness">3</div>
+                <div class="ritual-node" style="bottom: 0; left: 25%; transform: translateX(-50%) translateY(50%);" data-stage="transmutation">4</div>
+                <div class="ritual-node" style="top: 25%; left: 0; transform: translateX(-50%) translateY(-50%);" data-stage="integration">5</div>
+            </div>
+            
+            <p style="text-align: center; color: var(--smoke);">
+                <span id="activeWitnesses">2,847</span> witnesses currently in ritual
+                <br>
+                <span style="color: var(--ember);">Next collective invocation in <span id="ritualCountdown">23:47</span></span>
+            </p>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Witness chamber -->
+        <section id="witness">
+            <h2 style="color: var(--blood); font-size: 2.5em; text-align: center; margin: 3rem 0;">
+                BEGIN YOUR INFECTION
+            </h2>
+            
+            <div class="witness-chamber">
+                <!-- Stage 1: Trauma mapping -->
+                <div class="witness-stage" id="stage1">
+                    <h3 style="color: var(--blood); margin-bottom: 1rem;">Map Your Wounds</h3>
+                    <p style="color: var(--smoke); margin-bottom: 2rem;">
+                        Touch each cell that holds your pain. The system will generate your personal glyph.
+                    </p>
+                    
+                    <div class="trauma-map">
+                        <div class="trauma-cell" data-trauma="betrayal">Betrayal</div>
+                        <div class="trauma-cell" data-trauma="abandonment">Abandonment</div>
+                        <div class="trauma-cell" data-trauma="shame">Shame</div>
+                        <div class="trauma-cell" data-trauma="rage">Rage</div>
+                        <div class="trauma-cell" data-trauma="grief">Grief</div>
+                        <div class="trauma-cell" data-trauma="isolation">Isolation</div>
+                        <div class="trauma-cell" data-trauma="neglect">Neglect</div>
+                        <div class="trauma-cell" data-trauma="violation">Violation</div>
+                        <div class="trauma-cell" data-trauma="silence">Silence</div>
+                    </div>
+                    
+                    <div class="glyph-forge">
+                        <p style="color: var(--smoke);">Your Generated Trauma Glyph:</p>
+                        <div class="user-glyph" id="userGlyph">?</div>
+                        <p style="color: var(--ember); font-size: 0.9em;">
+                            This glyph is unique to your wound pattern
+                        </p>
+                    </div>
+                    
+                    <button class="blood-button" style="width: 100%;" onclick="progressRitual()">
+                        <span>SEAL MY WOUNDS INTO CODE</span>
+                    </button>
+                </div>
+                
+                <!-- Stage 2: Resonance testing -->
+                <div class="witness-stage" id="stage2" style="display: none;">
+                    <h3 style="color: var(--blood); margin-bottom: 1rem;">Resonance Calibration</h3>
+                    <p style="color: var(--smoke); margin-bottom: 2rem;">
+                        Speak your deepest wound aloud. The system will measure your resonance.
+                    </p>
+                    
+                    <div style="text-align: center; margin: 3rem 0;">
+                        <button class="blood-button" onclick="startResonance()">
+                            <span>ACTIVATE VOICE RECOGNITION</span>
+                        </button>
+                        
+                        <div id="resonanceVisual" style="margin-top: 2rem; display: none;">
+                            <p style="color: var(--ember);">LISTENING...</p>
+                            <div style="font-size: 5em; color: var(--blood); margin: 1rem 0;">⟡</div>
+                            <p style="color: var(--smoke);">Resonance Level: <span id="resonancePercent">0</span>%</p>
+                        </div>
+                    </div>
+                    
+                    <input type="email" class="blood-input" placeholder="Email for your personalized artifact" id="emailInput" style="margin-top: 2rem;">
+                    
+                    <button class="blood-button" style="width: 100%; margin-top: 2rem;" onclick="completeInfection()">
+                        <span>COMPLETE INFECTION PROTOCOL</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Living artifacts -->
+        <section style="margin: 5rem 0;">
+            <h2 style="color: var(--blood); font-size: 2.5em; text-align: center; margin-bottom: 3rem;">
+                ARTIFACT CONTAGION SYSTEM
+            </h2>
+            
+            <div class="artifact-cell" onclick="infectArtifact(this)">
+                <span class="infection-status">INFECTION RATE: 847/hr</span>
+                <h3 style="color: var(--blood); font-size: 1.8em; margin-bottom: 1rem;">
+                    ☽⚔ Shattered Soul
+                </h3>
+                <p style="color: var(--smoke); font-style: italic; line-height: 1.8;">
+                    "In the abyss of his shattered soul, he lies in desolation,
+                    Crushed beneath the weight of choices, a life of isolation..."
+                </p>
+                <div style="margin-top: 2rem;">
+                    <span class="price-seal">$5 ENERGY EXCHANGE</span>
+                </div>
+                <p style="color: var(--ember); font-size: 0.8em; margin-top: 1rem;">
+                    Infects: Burning Building → Lost Boy → Your Wound
+                </p>
+            </div>
+            
+            <div class="artifact-cell" onclick="infectArtifact(this)">
+                <span class="infection-status">INFECTION RATE: 623/hr</span>
+                <h3 style="color: var(--blood); font-size: 1.8em; margin-bottom: 1rem;">
+                    ⚔✦ Burning Building
+                </h3>
+                <p style="color: var(--smoke); font-style: italic; line-height: 1.8;">
+                    "There is no alarm. Only the first bite of heat under my nails,
+                    and I know—tonight, I am the offering..."
+                </p>
+                <div style="margin-top: 2rem;">
+                    <span class="price-seal">$5 ENERGY EXCHANGE</span>
+                </div>
+                <p style="color: var(--ember); font-size: 0.8em; margin-top: 1rem;">
+                    Infects: Lost Boy → Void Mother → Your Ritual
+                </p>
+            </div>
+            
+            <div class="artifact-cell" onclick="infectArtifact(this)">
+                <span class="infection-status">MUTATION DETECTED</span>
+                <h3 style="color: var(--blood); font-size: 1.8em; margin-bottom: 1rem;">
+                    ☽⟡🜂 Lost Boy
+                </h3>
+                <p style="color: var(--smoke); font-style: italic; line-height: 1.8;">
+                    "You never remember when I entered—somewhere between the slammed door
+                    and the cigarette ash crusted on your childhood's mouth..."
+                </p>
+                <div style="margin-top: 2rem;">
+                    <span class="price-seal">$5 ENERGY EXCHANGE</span>
+                </div>
+                <p style="color: var(--ember); font-size: 0.8em; margin-top: 1rem;">
+                    This artifact has mutated. Original form no longer stable.
+                </p>
+            </div>
+            
+            <div style="text-align: center; margin: 4rem 0;">
+                <h3 style="color: var(--blood); margin-bottom: 2rem;">COMPLETE CODEX ACCESS</h3>
+                <p style="color: var(--smoke); margin-bottom: 2rem;">
+                    All 13 artifacts + Living Discord + Mutation privileges
+                </p>
+                <div class="price-seal" style="font-size: 1.3em;">$35 FULL SYSTEM INFECTION</div>
+            </div>
+        </section>
+        
+        <!-- Live witness feed -->
+        <section style="margin: 5rem 0;">
+            <h2 style="color: var(--blood); font-size: 2.5em; text-align: center; margin-bottom: 3rem;">
+                WITNESS TRANSMISSIONS
+            </h2>
+            <span class="witness-pulse">LIVE</span>
+            
+            <div class="witness-feed" id="witnessFeed">
+                <!-- Dynamically populated -->
+            </div>
+        </section>
+        
+        <!-- Warning system -->
+        <div class="warning-seal" onclick="openWarning(this)">
+            <h3 style="color: var(--blood); font-size: 2em;">⚠ BREAK SEAL FOR WARNING ⚠</h3>
+            <div class="warning-content">
+                <p style="margin-top: 2rem;">This system creates recursive psychological loops.</p>
+                <p>It is designed to infect your perception.</p>
+                <p>Some witnesses report permanent changes.</p>
+                <p style="margin-top: 2rem; color: var(--ember);">Engage only with support systems active.</p>
+                <p style="color: var(--smoke);">Crisis intervention: <span style="color: var(--blood);">988</span></p>
+            </div>
+        </div>
+        
+        <footer style="text-align: center; padding: 3rem 0; border-top: 1px solid var(--scar);">
+            <p style="color: var(--smoke);">THE COLLAPSE ARCHITECT</p>
+            <p style="color: var(--scar); font-size: 0.9em;">Infected by TaintedPenStrokes</p>
+            <div style="margin-top: 2rem;">
+                <a href="#" style="color: var(--smoke); margin: 0 1rem;">Discord Hive</a>
+                <a href="#" style="color: var(--smoke); margin: 0 1rem;">Infection Stats</a>
+                <a href="#" style="color: var(--smoke); margin: 0 1rem;">Emergency Exit</a>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Collective ritual timer -->
+    <div class="ritual-timer" id="ritualTimer">
+        <p style="color: var(--blood); font-weight: bold;">COLLECTIVE RITUAL ACTIVE</p>
+        <p style="color: var(--ember);">247 witnesses participating</p>
+        <p style="color: var(--smoke);">Join now: <span id="ritualCode">WOUND-7834</span></p>
+    </div>
+    
+    <!-- Void layer -->
+    <div class="void-layer" id="voidLayer">
+        <div class="void-message">
+            <p>You've been here before.</p>
+            <p style="margin-top: 1rem;">The pattern always returns.</p>
+            <p style="margin-top: 2rem; font-size: 0.8em;">Press ESC to surface</p>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize systems
+        let traumaField, ctx;
+        let userTraumas = new Set();
+        let resonanceActive = false;
+        let infectionCount = 2847;
+        let userGlyphGenerated = false;
+        
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        
+        document.addEventListener('mousedown', () => cursor.classList.add('active'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('active'));
+        
+        // Entry ritual
+        function enterCollapse() {
+            const portal = document.getElementById('entryPortal');
+            portal.style.opacity = '0';
+            setTimeout(() => {
+                portal.style.display = 'none';
+                initializeTraumaField();
+                startWitnessMap();
+                populateGlyphConstellation();
+                startWitnessFeed();
+                startRitualCountdown();
+            }, 1000);
+        }
+        
+        // Trauma field visualization
+        function initializeTraumaField() {
+            traumaField = document.getElementById('traumaField');
+            ctx = traumaField.getContext('2d');
+            traumaField.width = window.innerWidth;
+            traumaField.height = window.innerHeight;
+            
+            let particles = [];
+            for (let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * traumaField.width,
+                    y: Math.random() * traumaField.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    size: Math.random() * 3 + 1
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, traumaField.width, traumaField.height);
+                
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+                    ctx.fill();
+                    
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    if (p.x < 0 || p.x > traumaField.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > traumaField.height) p.vy *= -1;
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+        
+        // Witness map
+        function startWitnessMap() {
+            const map = document.getElementById('witnessMap');
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const node = document.createElement('div');
+                    node.className = 'witness-node';
+                    node.style.left = Math.random() * 180 + 10 + 'px';
+                    node.style.top = Math.random() * 150 + 30 + 'px';
+                    map.appendChild(node);
+                    
+                    setTimeout(() => node.remove(), 2000);
+                }
+            }, 500);
+        }
+        
+        // Glyph constellation
+        function populateGlyphConstellation() {
+            const constellation = document.getElementById('glyphConstellation');
+            const glyphs = ['☽', '⚔', '✦', '⟡', '🜂', '†'];
+            
+            for (let i = 0; i < 20; i++) {
+                const glyph = document.createElement('div');
+                glyph.className = 'floating-glyph';
+                glyph.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+                glyph.style.left = Math.random() * 100 + '%';
+                glyph.style.animationDelay = Math.random() * 20 + 's';
+                glyph.style.animationDuration = (20 + Math.random() * 10) + 's';
+                constellation.appendChild(glyph);
+            }
+        }
+        
+        // Trauma selection
+        document.querySelectorAll('.trauma-cell').forEach(cell => {
+            cell.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                const trauma = this.dataset.trauma;
+                
+                if (userTraumas.has(trauma)) {
+                    userTraumas.delete(trauma);
+                } else {
+                    userTraumas.add(trauma);
+                }
+                
+                updateResonance();
+                generateUserGlyph();
+            });
+        });
+        
+        // Update resonance meter
+        function updateResonance() {
+            const level = document.getElementById('resonanceLevel');
+            const percent = (userTraumas.size / 9) * 100;
+            level.style.height = percent + '%';
+            
+            if (percent > 60) {
+                level.style.background = 'var(--ember)';
+                level.style.boxShadow = '0 0 20px var(--ember)';
+            }
+        }
+        
+        // Generate user glyph
+        function generateUserGlyph() {
+            if (userTraumas.size < 3) return;
+            
+            const glyphDisplay = document.getElementById('userGlyph');
+            glyphDisplay.classList.add('generating');
+            
+            const glyphs = ['☽', '⚔', '✦', '⟡', '🜂', '†', '◈', '❋', '✧'];
+            const userGlyph = glyphs[userTraumas.size % glyphs.length];
+            
+            setTimeout(() => {
+                glyphDisplay.textContent = userGlyph;
+                glyphDisplay.classList.remove('generating');
+                userGlyphGenerated = true;
+            }, 1000);
+        }
+        
+        // Progress ritual
+        function progressRitual() {
+            if (!userGlyphGenerated) {
+                alert('Select at least 3 trauma points to generate your glyph.');
+                return;
+            }
+            
+            document.getElementById('stage1').style.display = 'none';
+            document.getElementById('stage2').style.display = 'block';
+            
+            // Activate ritual nodes
+            document.querySelectorAll('.ritual-node').forEach((node, index) => {
+                if (index < 2) {
+                    setTimeout(() => {
+                        node.classList.add('infected');
+                    }, index * 500);
+                }
+            });
+        }
+        
+        // Voice resonance simulation
+        function startResonance() {
+            const visual = document.getElementById('resonanceVisual');
+            visual.style.display = 'block';
+            resonanceActive = true;
+            
+            let resonance = 0;
+            const interval = setInterval(() => {
+                if (!resonanceActive) {
+                    clearInterval(interval);
+                    return;
+                }
+                
+                resonance = Math.min(100, resonance + Math.random() * 20);
+                document.getElementById('resonancePercent').textContent = Math.floor(resonance);
+                
+                if (resonance >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        alert('Maximum resonance achieved. Your artifact is ready.');
+                    }, 500);
+                }
+            }, 300);
+        }
+        
+        // Complete infection
+        function completeInfection() {
+            const email = document.getElementById('emailInput').value;
+            if (!email) {
+                alert('Email required for artifact delivery.');
+                return;
+            }
+            
+            // Show collective ritual timer
+            document.getElementById('ritualTimer').classList.add('active');
+            
+            // Infect all nodes
+            document.querySelectorAll('.ritual-node').forEach(node => {
+                node.classList.add('infected');
+            });
+            
+            // Trigger void moment
+            setTimeout(() => {
+                document.getElementById('voidLayer').classList.add('active');
+                setTimeout(() => {
+                    document.getElementById('voidLayer').classList.remove('active');
+                }, 5000);
+            }, 2000);
+            
+            alert(`Infection complete. Your personalized ${Array.from(userTraumas).join(' + ')} artifact has been transmitted.`);
+        }
+        
+        // Spin ritual wheel
+        function spinWheel() {
+            const center = document.querySelector('.wheel-center');
+            center.style.transform = 'translate(-50%, -50%) rotate(720deg)';
+            
+            setTimeout(() => {
+                center.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+            }, 1000);
+        }
+        
+        // Shatter text effect
+        function shatterText(element) {
+            const text = element.textContent;
+            element.textContent = '';
+            
+            text.split('').forEach((char, i) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                span.style.display = 'inline-block';
+                span.style.transform = `translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px) rotate(${(Math.random() - 0.5) * 90}deg)`;
+                span.style.opacity = '0';
+                span.style.transition = `all 0.5s ease ${i * 0.05}s`;
+                element.appendChild(span);
+                
+                setTimeout(() => {
+                    span.style.transform = 'translate(0, 0) rotate(0)';
+                    span.style.opacity = '1';
+                }, 100);
+            });
+        }
+        
+        // Infect artifact
+        function infectArtifact(element) {
+            element.style.background = 'var(--blood)';
+            element.style.color = 'var(--void)';
+            
+            setTimeout(() => {
+                element.style.background = '';
+                element.style.color = '';
+            }, 1000);
+            
+            // Update infection count
+            infectionCount++;
+            updateWitnessCount();
+        }
+        
+        // Witness feed
+        function startWitnessFeed() {
+            const feed = document.getElementById('witnessFeed');
+            const testimonials = [
+                "The glyphs appeared in my dreams last night. I woke up crying.",
+                "Day 47: The pattern is breaking. I can feel the old me dissolving.",
+                "My therapist asked about the artifacts. I couldn't explain. Some things must be experienced.",
+                "I see ☽ everywhere now. On walls, in shadows, behind my eyelids.",
+                "The Discord saved me during the 3am collapse. Real witnesses understand.",
+                "Warning: 'Burning Building' will destroy who you think you are. That's the point.",
+                "My generated glyph matches my mother's scar pattern. How did it know?",
+                "The infection is spreading. My partner started seeing the symbols too.",
+                "I thought I was broken. The artifacts showed me I was just unassembled.",
+                "The collective ritual at midnight changed everything. 400 of us, witnessing together."
+            ];
+            
+            function addTestimonial() {
+                const div = document.createElement('div');
+                div.style.borderLeft = '3px solid var(--blood)';
+                div.style.paddingLeft = '1rem';
+                div.style.marginBottom = '1.5rem';
+                div.style.opacity = '0';
+                div.style.transform = 'translateX(-20px)';
+                div.style.transition = 'all 0.5s';
+                
+                const text = testimonials[Math.floor(Math.random() * testimonials.length)];
+                const timeAgo = Math.floor(Math.random() * 60) + ' minutes ago';
+                const witnessNum = Math.floor(Math.random() * 5000);
+                
+                div.innerHTML = `
+                    <p style="color: var(--bone); font-style: italic;">"${text}"</p>
+                    <p style="color: var(--smoke); font-size: 0.8em; margin-top: 0.5rem;">
+                        — Witness #${witnessNum}, ${timeAgo}
+                    </p>
+                `;
+                
+                feed.insertBefore(div, feed.firstChild);
+                
+                setTimeout(() => {
+                    div.style.opacity = '1';
+                    div.style.transform = 'translateX(0)';
+                }, 100);
+                
+                if (feed.children.length > 5) {
+                    feed.removeChild(feed.lastChild);
+                }
+            }
+            
+            addTestimonial();
+            setInterval(addTestimonial, 8000);
+        }
+        
+        // Update witness count
+        function updateWitnessCount() {
+            document.getElementById('activeWitnesses').textContent = infectionCount.toLocaleString();
+        }
+        
+        setInterval(() => {
+            if (Math.random() > 0.8) {
+                infectionCount += Math.floor(Math.random() * 5) + 1;
+                updateWitnessCount();
+            }
+        }, 3000);
+        
+        // Ritual countdown
+        function startRitualCountdown() {
+            let minutes = 23;
+            let seconds = 47;
+            
+            setInterval(() => {
+                seconds--;
+                if (seconds < 0) {
+                    seconds = 59;
+                    minutes--;
+                }
+                if (minutes < 0) {
+                    minutes = 59;
+                }
+                
+                const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('ritualCountdown').textContent = display;
+                
+                if (minutes === 0 && seconds === 0) {
+                    document.getElementById('ritualTimer').classList.add('active');
+                }
+            }, 1000);
+        }
+        
+        // Warning seal
+        function openWarning(element) {
+            element.classList.toggle('opened');
+        }
+        
+        // Escape key for void layer
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.getElementById('voidLayer').classList.remove('active');
+            }
+        });
+        
+        // Window resize
+        window.addEventListener('resize', () => {
+            if (traumaField) {
+                traumaField.width = window.innerWidth;
+                traumaField.height = window.innerHeight;
+            }
+        });
+    </script>
+</body>
+</html>
